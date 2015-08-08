@@ -11,65 +11,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="30dp"
-        android:textSize="22dp"/>
+        android:textSize="22sp"/>
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:id="@+id/spotify_streamer"
-        android:textSize="18dp"
-        android:text="@string/spotify_streamer"
-        android:background="@drawable/custom_button" />
+        android:textSize="18sp"
+        android:text="@string/popular_movies"
+        android:background="@drawable/custom_button"
+        style="@style/button_style"
+        android:onClick="popularMoviesClick"/>
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:id="@+id/scores_app"
         android:text="@string/scores_app"
         android:background="@drawable/custom_button"
-        style="@style/margin"/>
+        android:layout_marginTop="10dp"
+        style="@style/button_style"
+        android:onClick="scoresAppClick"/>
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:id="@+id/library_app"
         android:text="@string/library_app"
         android:background="@drawable/custom_button"
-        style="@style/margin"/>
+        android:layout_marginTop="10dp"
+        style="@style/button_style"
+        android:onClick="libraryAppClick"/>
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:id="@+id/build_itbig"
         android:text="@string/build_it_bigger"
         android:background="@drawable/custom_button"
-        style="@style/margin"/>
+        android:layout_marginTop="10dp"
+        style="@style/button_style"
+        android:onClick="buildItBigClick"/>
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:id="@+id/capstone_myApp"
         android:text="@string/capstone_my_own_app"
         android:background="@drawable/custom_button_capstone"
-        style="@style/margin"/>
+        android:layout_marginTop="10dp"
+        style="@style/button_style"
+        android:onClick="capstoneAppClick"/>
 
 </LinearLayout>
