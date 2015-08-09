@@ -13,7 +13,6 @@
         android:paddingBottom="30dp"
         android:textSize="22sp"/>
     <Button
-        android:id="@+id/spotify_streamer"
         android:textSize="18sp"
         android:text="@string/popular_movies"
         android:background="@drawable/custom_button"
@@ -21,7 +20,6 @@
         android:onClick="popularMoviesClick"/>
     <Button
         android:textSize="18sp"
-        android:id="@+id/scores_app"
         android:text="@string/scores_app"
         android:background="@drawable/custom_button"
         android:layout_marginTop="10dp"
@@ -29,7 +27,6 @@
         android:onClick="scoresAppClick"/>
     <Button
         android:textSize="18sp"
-        android:id="@+id/library_app"
         android:text="@string/library_app"
         android:background="@drawable/custom_button"
         android:layout_marginTop="10dp"
@@ -37,7 +34,6 @@
         android:onClick="libraryAppClick"/>
     <Button
         android:textSize="18sp"
-        android:id="@+id/build_itbig"
         android:text="@string/build_it_bigger"
         android:background="@drawable/custom_button"
         android:layout_marginTop="10dp"
@@ -45,7 +41,6 @@
         android:onClick="buildItBigClick"/>
     <Button
         android:textSize="16sp"
-        android:id="@+id/capstone_myApp"
         android:text="@string/capstone_my_own_app"
         android:background="@drawable/custom_button_capstone"
         android:layout_marginTop="10dp"
