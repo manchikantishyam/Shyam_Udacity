@@ -7,6 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,6 +28,9 @@ public class PopularMoviesHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popular_movies_home);
+        showToast("PopularMovies started");
+        TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
+        getMoviesTask.execute("popularity.desc");
     }
 
     @Override
@@ -59,13 +67,14 @@ public class PopularMoviesHome extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String MoviesRespones="";
+            Uri builtUri;
             try {
                 String SORT_PARAM = "sort_by";
                 String KEY_PARAM = "api_key";
                 String sort_by = params[0];
                 String API_key = getApplicationContext().getResources().getString(R.string.popular_movie_API_key);
                 String base_Url = "http://api.themoviedb.org/3/discover/movie?";
-                Uri builtUri = Uri.parse(base_Url).buildUpon()
+                builtUri = Uri.parse(base_Url).buildUpon()
                         .appendQueryParameter(SORT_PARAM, sort_by)
                         .appendQueryParameter(KEY_PARAM, API_key)
                         .build();
@@ -114,6 +123,8 @@ public class PopularMoviesHome extends AppCompatActivity {
                     }
                 }
             }
+            Log.d("Shyam-URL",builtUri.toString());
+            Log.d("Shyam-Movie Response",MoviesRespones);
 
 //            try {
                 return getMoviesDataFromJson(MoviesRespones);
@@ -132,8 +143,42 @@ public class PopularMoviesHome extends AppCompatActivity {
     }
 
     public ArrayList<MovieDetailObject> getMoviesDataFromJson(String response){
+        final String OWM_RESULTS = "results";
+        final String OWM_ID = "id";
+        final String OWM_TITLE = "title";
+        final String OWM_RELEASE_DATE = "release_date";
+        final String OWM_BACKDROP_PATH = "backdrop_path";
+        final String OWM_OVERVIEW = "overview";
+        try {
+            JSONObject movieListJson = new JSONObject(response);
+            JSONArray movieListArray = movieListJson.getJSONArray(OWM_RESULTS);
+            ArrayList<MovieDetailObject> parsedMovieDetailsArray = new ArrayList<MovieDetailObject>();
+
+            for(int i = 0; i < movieListArray.length(); i++) {
+                MovieDetailObject currentMovieDetailObject = new MovieDetailObject();
+
+                JSONObject movieJsonObject = movieListArray.getJSONObject(i);
+                currentMovieDetailObject.setID(movieJsonObject.getString(OWM_ID));
+                currentMovieDetailObject.setTitle(movieJsonObject.getString(OWM_TITLE));
+                currentMovieDetailObject.setRelease_date(movieJsonObject.getString(OWM_RELEASE_DATE));
+                currentMovieDetailObject.setBackdrop_ID(movieJsonObject.getString(OWM_BACKDROP_PATH));
+                currentMovieDetailObject.setOverView(movieJsonObject.getString(OWM_OVERVIEW));
+                parsedMovieDetailsArray.add(currentMovieDetailObject);
+
+            }
+
+            return parsedMovieDetailsArray;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         return null;
+    }
+
+    public void showToast(String toastString){
+        Toast.makeText(this.getBaseContext(), toastString,
+                Toast.LENGTH_SHORT).show();
     }
 }

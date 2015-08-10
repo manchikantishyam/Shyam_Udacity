@@ -1,5 +1,6 @@
 package com.example.shyamsunder.shyam_udacity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -21,7 +22,9 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void popularMoviesClick(View v){
-        showToast("PopularMovies is Under Construction");
+        Intent localIntent = new Intent(this,PopularMoviesHome.class);
+        startActivity(localIntent);
+
     }
     public void scoresAppClick(View v){
         showToast("Scores App is Under Construction");
