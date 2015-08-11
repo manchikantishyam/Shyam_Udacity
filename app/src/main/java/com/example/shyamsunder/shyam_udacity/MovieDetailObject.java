@@ -9,6 +9,11 @@ public class MovieDetailObject {
     private String Backdrop_ID;
     private String Release_date;
     private String OverView;
+    private String BaseImageURL="http://image.tmdb.org/t/p/w185/";
+
+    public MovieDetailObject(){
+        super();
+    }
 
     public String getTitle() {
         return Title;
@@ -26,12 +31,12 @@ public class MovieDetailObject {
         this.ID = ID;
     }
 
-    public String getBackdrop_ID() {
+    public String getBackdrop_URL() {
         return Backdrop_ID;
     }
 
-    public void setBackdrop_ID(String backdrop_ID) {
-        Backdrop_ID = backdrop_ID;
+    public void setBackdrop_URL(String backdrop_ID) {
+        Backdrop_ID = BaseImageURL+backdrop_ID;
     }
 
     public String getRelease_date() {

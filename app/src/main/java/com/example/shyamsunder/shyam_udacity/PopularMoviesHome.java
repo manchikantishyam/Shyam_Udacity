@@ -126,15 +126,7 @@ public class PopularMoviesHome extends AppCompatActivity {
             Log.d("Shyam-URL",builtUri.toString());
             Log.d("Shyam-Movie Response",MoviesRespones);
 
-//            try {
-                return getMoviesDataFromJson(MoviesRespones);
-//            } catch (JSONException e) {
-//                Log.e(LOG_TAG, e.getMessage(), e);
-//                e.printStackTrace();
-//            }
-
-
-//            return null;
+            return getMoviesDataFromJson(MoviesRespones);
         }
 
         @Override
@@ -161,7 +153,7 @@ public class PopularMoviesHome extends AppCompatActivity {
                 currentMovieDetailObject.setID(movieJsonObject.getString(OWM_ID));
                 currentMovieDetailObject.setTitle(movieJsonObject.getString(OWM_TITLE));
                 currentMovieDetailObject.setRelease_date(movieJsonObject.getString(OWM_RELEASE_DATE));
-                currentMovieDetailObject.setBackdrop_ID(movieJsonObject.getString(OWM_BACKDROP_PATH));
+                currentMovieDetailObject.setBackdrop_URL(movieJsonObject.getString(OWM_BACKDROP_PATH));
                 currentMovieDetailObject.setOverView(movieJsonObject.getString(OWM_OVERVIEW));
                 parsedMovieDetailsArray.add(currentMovieDetailObject);
 
