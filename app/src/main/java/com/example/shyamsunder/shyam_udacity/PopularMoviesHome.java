@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -23,11 +24,22 @@ import java.util.ArrayList;
 
 public class PopularMoviesHome extends AppCompatActivity {
     String LOG_TAG ="PopularMoviesHome";
+    private GridView movieGridView;
+    private MovieImageGridAdapter movieGridAdapter;
+    private ArrayList<MovieDetailObject> movieGridData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popular_movies_home);
+
+        movieGridView = (GridView) findViewById(R.id.gridView);
+
+        //Initialize with empty data
+        movieGridData = new ArrayList<>();
+        movieGridAdapter = new MovieImageGridAdapter(this, R.layout.movie_grid_item_layout, movieGridData);
+        movieGridView.setAdapter(movieGridAdapter);
+
         showToast("PopularMovies started");
         TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
         getMoviesTask.execute("popularity.desc");
@@ -56,11 +68,8 @@ public class PopularMoviesHome extends AppCompatActivity {
     }
 
     public class TheMovieDBAPI extends AsyncTask<String,Void,ArrayList<MovieDetailObject>> {
-
         @Override
-        protected void onPostExecute(ArrayList<MovieDetailObject> MoviesList) {
-
-        }
+        protected void onPreExecute() {}
 
         @Override
         protected ArrayList<MovieDetailObject> doInBackground(String... params) {
@@ -130,7 +139,15 @@ public class PopularMoviesHome extends AppCompatActivity {
         }
 
         @Override
-        protected void onPreExecute() {}
+        protected void onPostExecute(ArrayList<MovieDetailObject> MoviesList) {
+            if(MoviesList.size()>0){
+                movieGridData = MoviesList;
+                movieGridAdapter.setGridData(movieGridData);
+                Toast.makeText(PopularMoviesHome.this, "Movies Loaded", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(PopularMoviesHome.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
+            }
+        }
 
     }
 
@@ -141,6 +158,7 @@ public class PopularMoviesHome extends AppCompatActivity {
         final String OWM_RELEASE_DATE = "release_date";
         final String OWM_BACKDROP_PATH = "backdrop_path";
         final String OWM_OVERVIEW = "overview";
+        final String OWM_VOTE_RATING = "vote_average";
         try {
             JSONObject movieListJson = new JSONObject(response);
             JSONArray movieListArray = movieListJson.getJSONArray(OWM_RESULTS);
@@ -148,15 +166,14 @@ public class PopularMoviesHome extends AppCompatActivity {
 
             for(int i = 0; i < movieListArray.length(); i++) {
                 MovieDetailObject currentMovieDetailObject = new MovieDetailObject();
-
                 JSONObject movieJsonObject = movieListArray.getJSONObject(i);
                 currentMovieDetailObject.setID(movieJsonObject.getString(OWM_ID));
                 currentMovieDetailObject.setTitle(movieJsonObject.getString(OWM_TITLE));
                 currentMovieDetailObject.setRelease_date(movieJsonObject.getString(OWM_RELEASE_DATE));
                 currentMovieDetailObject.setBackdrop_URL(movieJsonObject.getString(OWM_BACKDROP_PATH));
                 currentMovieDetailObject.setOverView(movieJsonObject.getString(OWM_OVERVIEW));
+                currentMovieDetailObject.setVote_rating(movieJsonObject.getString(OWM_VOTE_RATING));
                 parsedMovieDetailsArray.add(currentMovieDetailObject);
-
             }
 
             return parsedMovieDetailsArray;
@@ -164,7 +181,6 @@ public class PopularMoviesHome extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         return null;
     }

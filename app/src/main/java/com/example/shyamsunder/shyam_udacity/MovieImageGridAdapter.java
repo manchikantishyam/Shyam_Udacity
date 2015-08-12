@@ -2,13 +2,11 @@ package com.example.shyamsunder.shyam_udacity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 public class MovieImageGridAdapter extends ArrayAdapter<MovieDetailObject> {
     private Context mContext;
     private int layoutResourceId;
-    private ArrayList<MovieDetailObject> mGridData = new ArrayList<MovieDetailObject>();
+    private ArrayList<MovieDetailObject> mGridData = new ArrayList<>();
 
     public MovieImageGridAdapter(Context mContext, int layoutResourceId, ArrayList<MovieDetailObject> mGridData) {
         super(mContext, layoutResourceId, mGridData);
@@ -40,6 +38,24 @@ public class MovieImageGridAdapter extends ArrayAdapter<MovieDetailObject> {
     }
 
     @Override
+    public int getCount() {
+        // TODO Auto-generated method stub
+        return mGridData.size();
+    }
+
+    @Override
+    public MovieDetailObject getItem(int position) {
+        // TODO Auto-generated method stub
+        return mGridData.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        // TODO Auto-generated method stub
+        return position;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         ViewHolder holder;
@@ -55,14 +71,11 @@ public class MovieImageGridAdapter extends ArrayAdapter<MovieDetailObject> {
         }
 
         MovieDetailObject item = mGridData.get(position);
-        holder.titleTextView.setText(Html.fromHtml(item.getTitle()));
-
         Picasso.with(mContext).load(item.getBackdrop_URL()).into(holder.imageView);
         return row;
     }
 
     static class ViewHolder {
-        TextView titleTextView;
         ImageView imageView;
     }
 }

@@ -11,6 +11,16 @@ public class MovieDetailObject {
     private String OverView;
     private String BaseImageURL="http://image.tmdb.org/t/p/w185/";
 
+    public String getVote_rating() {
+        return Vote_rating;
+    }
+
+    public void setVote_rating(String vote_rating) {
+        Vote_rating = vote_rating;
+    }
+
+    private String Vote_rating;
+
     public MovieDetailObject(){
         super();
     }
