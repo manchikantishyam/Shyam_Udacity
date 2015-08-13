@@ -12,4 +12,5 @@
     <string name="popular_movie_API_key">84556778517febea691eaf79e6f3b4cf</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_movie_details_screen">MovieDetailsScreen</string>
 </resources>
