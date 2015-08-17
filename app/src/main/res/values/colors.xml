@@ -14,4 +14,7 @@
     <color name="red_light">#FF3D00</color>
     <color name="red_dark">#DD2C00</color>
     <color name="red_med">#F4511E</color>
+    <color name="teal_title">#009688</color>
+    <color name="text_color">#212121</color>
+    <color name="black">#000000</color>
 </resources>

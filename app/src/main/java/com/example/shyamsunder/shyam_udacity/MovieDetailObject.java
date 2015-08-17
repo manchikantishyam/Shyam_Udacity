@@ -1,15 +1,17 @@
 package com.example.shyamsunder.shyam_udacity;
 
+import java.io.Serializable;
+
 /**
  * Created by Shyam on 8/9/15.
  */
-public class MovieDetailObject {
+public class MovieDetailObject implements Serializable {
     private String ID;
     private String Title;
     private String Backdrop_ID;
     private String Release_date;
     private String OverView;
-    private String BaseImageURL="http://image.tmdb.org/t/p/w185/";
+    private String BaseImageURL="http://image.tmdb.org/t/p/w500/";
 
     public String getVote_rating() {
         return Vote_rating;

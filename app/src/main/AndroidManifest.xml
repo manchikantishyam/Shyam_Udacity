@@ -23,8 +23,12 @@
             android:label="@string/title_activity_popular_movies_home" >
         </activity>
         <activity
-            android:name=".MovieDetailsScreen"
-            android:label="@string/title_activity_movie_details_screen" >
+            android:name=".PopularMovieDetailsScreen"
+            android:label="@string/title_activity_popular_movie_details_screen"
+            android:parentActivityName=".PopularMoviesHome" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.shyamsunder.shyam_udacity.PopularMoviesHome" />
         </activity>
     </application>
 

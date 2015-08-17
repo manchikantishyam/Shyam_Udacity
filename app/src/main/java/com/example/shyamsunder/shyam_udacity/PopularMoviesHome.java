@@ -1,5 +1,6 @@
 package com.example.shyamsunder.shyam_udacity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ public class PopularMoviesHome extends AppCompatActivity {
     private GridView movieGridView;
     private MovieImageGridAdapter movieGridAdapter;
     private ArrayList<MovieDetailObject> movieGridData;
+    public final static String MOVIE_OBJECT_KEY = "movie_detail";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,22 @@ public class PopularMoviesHome extends AppCompatActivity {
         movieGridData = new ArrayList<>();
         movieGridAdapter = new MovieImageGridAdapter(this, R.layout.movie_grid_item_layout, movieGridData);
         movieGridView.setAdapter(movieGridAdapter);
+
+        movieGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                //Get item at position
+                MovieDetailObject currentMovieDetailObject = (MovieDetailObject) parent.getItemAtPosition(position);
+
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(MOVIE_OBJECT_KEY,currentMovieDetailObject);
+                intent.putExtras(bundle);
+                intent.setClass(PopularMoviesHome.this, PopularMovieDetailsScreen.class);
+
+                startActivity(intent);
+            }
+        });
 
         showToast("PopularMovies started");
         TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
@@ -60,7 +80,14 @@ public class PopularMoviesHome extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_popular) {
+            TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
+            getMoviesTask.execute("popularity.desc");
+            return true;
+        }
+        if (id == R.id.action_rated) {
+            TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
+            getMoviesTask.execute("vote_average.desc");
             return true;
         }
 

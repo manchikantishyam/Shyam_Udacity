@@ -8,9 +8,11 @@
     <string name="build_it_bigger">BUILD IT BIGGER</string>
     <string name="xyz_reader">XYZ READER</string>
     <string name="capstone_my_own_app">CAPSTONE MY OWN APP</string>
-    <string name="title_activity_popular_movies_home">PopularMoviesHome</string>
+    <string name="title_activity_popular_movies_home">Pop Movies</string>
     <string name="popular_movie_API_key">84556778517febea691eaf79e6f3b4cf</string>
-
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_movie_details_screen">MovieDetailsScreen</string>
+    <string name="title_activity_movie_details_screen">MovieDetail</string>
+    <string name="title_activity_popular_movie_details_screen">PopularMovieDetailsScreen</string>
+    <string name="most_popular">Most Popular</string>
+    <string name="high_rated">Highest-Rated</string>
 </resources>
