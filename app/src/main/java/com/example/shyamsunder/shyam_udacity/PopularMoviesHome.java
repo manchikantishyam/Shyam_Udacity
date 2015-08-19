@@ -31,11 +31,16 @@ public class PopularMoviesHome extends AppCompatActivity {
     private MovieImageGridAdapter movieGridAdapter;
     private ArrayList<MovieDetailObject> movieGridData;
     public final static String MOVIE_OBJECT_KEY = "movie_detail";
+    public static String MOVIE_SORT_ORDER="popularity.desc";
+    public final String SORT_ORDER_KEY="sort_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popular_movies_home);
+
+        if (savedInstanceState != null)
+            MOVIE_SORT_ORDER = savedInstanceState.getString(SORT_ORDER_KEY);
 
         movieGridView = (GridView) findViewById(R.id.gridView);
 
@@ -46,23 +51,18 @@ public class PopularMoviesHome extends AppCompatActivity {
 
         movieGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-                //Get item at position
                 MovieDetailObject currentMovieDetailObject = (MovieDetailObject) parent.getItemAtPosition(position);
-
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(MOVIE_OBJECT_KEY,currentMovieDetailObject);
                 intent.putExtras(bundle);
                 intent.setClass(PopularMoviesHome.this, PopularMovieDetailsScreen.class);
-
                 startActivity(intent);
             }
         });
 
-        showToast("PopularMovies started");
         TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
-        getMoviesTask.execute("popularity.desc");
+        getMoviesTask.execute(MOVIE_SORT_ORDER);
     }
 
     @Override
@@ -78,16 +78,17 @@ public class PopularMoviesHome extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_popular) {
             TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
-            getMoviesTask.execute("popularity.desc");
+            MOVIE_SORT_ORDER="popularity.desc";
+            getMoviesTask.execute(MOVIE_SORT_ORDER);
             return true;
         }
         if (id == R.id.action_rated) {
             TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
-            getMoviesTask.execute("vote_average.desc");
+            MOVIE_SORT_ORDER="vote_average.desc";
+            getMoviesTask.execute(MOVIE_SORT_ORDER);
             return true;
         }
 
@@ -144,7 +145,7 @@ public class PopularMoviesHome extends AppCompatActivity {
                 MoviesRespones = buffer.toString();
 
 
-            }catch(IOException e){
+            }catch(Throwable e){
                 Log.e(LOG_TAG, "Error ", e);
                 return null;
             }finally {
@@ -167,12 +168,12 @@ public class PopularMoviesHome extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<MovieDetailObject> MoviesList) {
-            if(MoviesList.size()>0){
+            if(MoviesList!=null&&MoviesList.size()>0){
                 movieGridData = MoviesList;
                 movieGridAdapter.setGridData(movieGridData);
-                Toast.makeText(PopularMoviesHome.this, "Movies Loaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PopularMoviesHome.this, "Movies Loading", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(PopularMoviesHome.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PopularMoviesHome.this, "Failed to fetch data! Please check API Key", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -215,5 +216,11 @@ public class PopularMoviesHome extends AppCompatActivity {
     public void showToast(String toastString){
         Toast.makeText(this.getBaseContext(), toastString,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharSequence(SORT_ORDER_KEY,MOVIE_SORT_ORDER);
     }
 }
