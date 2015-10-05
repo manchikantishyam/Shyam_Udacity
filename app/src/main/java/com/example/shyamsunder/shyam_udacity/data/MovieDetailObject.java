@@ -1,6 +1,7 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Shyam on 8/9/15.
@@ -12,6 +13,8 @@ public class MovieDetailObject implements Serializable {
     private String Release_date;
     private String OverView;
     private String BaseImageURL="http://image.tmdb.org/t/p/w500/";
+    private ArrayList<movieTrailerObject> movieTrailers = new ArrayList<>();
+    private ArrayList<movieReviewObject> movieReviews = new ArrayList<>();
 
     public String getVote_rating() {
         return Vote_rating;
@@ -66,5 +69,13 @@ public class MovieDetailObject implements Serializable {
     public void setOverView(String overView) {
         OverView = overView;
     }
+
+    public ArrayList<movieTrailerObject> getMovieTrailers() {return movieTrailers;}
+
+    public void addMovieTrailer(movieTrailerObject movieTrailer) {this.movieTrailers.add(movieTrailer);}
+
+    public ArrayList<movieReviewObject> getMovieReviews() {return movieReviews;}
+
+    public void addMovieReviewObject(movieReviewObject movieReview) {this.movieReviews.add(movieReview);}
 
 }

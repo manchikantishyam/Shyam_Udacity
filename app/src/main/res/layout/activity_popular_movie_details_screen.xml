@@ -7,7 +7,8 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/movie_details_scroll_view">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -74,6 +75,44 @@
                 android:layout_marginTop="15dp"
                 android:text="Every child comes into this world full of promises, none more than so Chappie he is gifted, special, a podigy: he is a Robot"
                 android:textSize="15sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Trailers:"
+                android:textSize="20sp"/>
+
+           <ListView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:id="@+id/trailerListView"
+               android:divider="@null">
+           </ListView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Reviews:"
+                android:textSize="20sp"/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/review_ListView"
+                android:divider="@null">
+            </ListView>
+
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -6,48 +6,45 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
-import com.squareup.picasso.Picasso;
+import com.example.shyamsunder.shyam_udacity.data.movieTrailerObject;
 
 import java.util.ArrayList;
 
 /**
- * Created by Shyam on 8/10/15.
+ * Created by Shyam on 10/4/15.
  */
-public class MovieImageGridAdapter extends ArrayAdapter<MovieDetailObject> {
+public class MovieDetailTrailerAdapter extends ArrayAdapter<movieTrailerObject> {
     private Context mContext;
     private int layoutResourceId;
-    private ArrayList<MovieDetailObject> mGridData = new ArrayList<>();
+    private ArrayList<movieTrailerObject> movieTrailerObjects = new ArrayList<>();
 
-    public MovieImageGridAdapter(Context mContext, int layoutResourceId, ArrayList<MovieDetailObject> mGridData) {
-        super(mContext, layoutResourceId, mGridData);
-        this.layoutResourceId = layoutResourceId;
-        this.mContext = mContext;
-        this.mGridData = mGridData;
+    public MovieDetailTrailerAdapter(Context context, int resource, ArrayList<movieTrailerObject> movieTrailerObjects) {
+        super(context, resource,movieTrailerObjects);
+        this.movieTrailerObjects = movieTrailerObjects;
+        layoutResourceId=resource;
+        mContext=context;
     }
-
-
     /**
      * Updates grid data and refresh grid items.
-     * @param mGridData
+     * @param movieTrailerObjects
      */
-    public void setGridData(ArrayList<MovieDetailObject> mGridData) {
-        this.mGridData = mGridData;
+    public void setGridData(ArrayList<movieTrailerObject> movieTrailerObjects) {
+        this.movieTrailerObjects = movieTrailerObjects;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return mGridData.size();
+        return movieTrailerObjects.size();
     }
 
     @Override
-    public MovieDetailObject getItem(int position) {
+    public movieTrailerObject getItem(int position) {
         // TODO Auto-generated method stub
-        return mGridData.get(position);
+        return movieTrailerObjects.get(position);
     }
 
     @Override
@@ -65,18 +62,18 @@ public class MovieImageGridAdapter extends ArrayAdapter<MovieDetailObject> {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
-            holder.imageView = (ImageView) row.findViewById(R.id.grid_item_image);
+            holder.textView = (TextView) row.findViewById(R.id.trailerName);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
         }
 
-        MovieDetailObject item = mGridData.get(position);
-        Picasso.with(mContext).load(item.getBackdrop_URL()).into(holder.imageView);
+        movieTrailerObject item = movieTrailerObjects.get(position);
+        holder.textView.setText(item.getName());
         return row;
     }
 
     static class ViewHolder {
-        ImageView imageView;
+        TextView textView;
     }
 }

@@ -1,6 +1,5 @@
 package com.example.shyamsunder.shyam_udacity;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +11,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.services.getAdditionalDetails;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,12 +54,9 @@ public class PopularMoviesHome extends AppCompatActivity {
         movieGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 MovieDetailObject currentMovieDetailObject = (MovieDetailObject) parent.getItemAtPosition(position);
-                Intent intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(MOVIE_OBJECT_KEY,currentMovieDetailObject);
-                intent.putExtras(bundle);
-                intent.setClass(PopularMoviesHome.this, PopularMovieDetailsScreen.class);
-                startActivity(intent);
+                getAdditionalDetails getAdditionalDetailsTask = new getAdditionalDetails(PopularMoviesHome.this);
+                getAdditionalDetailsTask.execute(currentMovieDetailObject);
+
             }
         });
 
