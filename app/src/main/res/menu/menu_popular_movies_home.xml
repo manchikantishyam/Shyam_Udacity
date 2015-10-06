@@ -6,4 +6,6 @@
         android:orderInCategory="1" app:showAsAction="never" />
     <item android:id="@+id/action_rated" android:title="@string/high_rated"
         android:orderInCategory="2" app:showAsAction="never" />
+    <item android:id="@+id/action_favorite" android:title="@string/favorite_movies"
+        android:orderInCategory="3" app:showAsAction="never" />
 </menu>

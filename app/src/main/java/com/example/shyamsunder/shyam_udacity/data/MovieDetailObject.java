@@ -12,7 +12,7 @@ public class MovieDetailObject implements Serializable {
     private String Backdrop_ID;
     private String Release_date;
     private String OverView;
-    private String BaseImageURL="http://image.tmdb.org/t/p/w500/";
+    public String BaseImageURL="http://image.tmdb.org/t/p/w500/";
     private ArrayList<movieTrailerObject> movieTrailers = new ArrayList<>();
     private ArrayList<movieReviewObject> movieReviews = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class MovieDetailObject implements Serializable {
     }
 
     public void setBackdrop_URL(String backdrop_ID) {
-        Backdrop_ID = BaseImageURL+backdrop_ID;
+        Backdrop_ID = backdrop_ID;
     }
 
     public String getRelease_date() {
@@ -77,5 +77,13 @@ public class MovieDetailObject implements Serializable {
     public ArrayList<movieReviewObject> getMovieReviews() {return movieReviews;}
 
     public void addMovieReviewObject(movieReviewObject movieReview) {this.movieReviews.add(movieReview);}
+
+    public void clearMovieTrailers(){
+       movieTrailers = new ArrayList<>();
+    }
+    public void clearMovieReviews(){
+        movieReviews = new ArrayList<>();
+    }
+
 
 }

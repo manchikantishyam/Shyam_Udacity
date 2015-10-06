@@ -2,17 +2,14 @@ package com.example.shyamsunder.shyam_udacity.services;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
-import com.example.shyamsunder.shyam_udacity.PopularMovieDetailsScreen;
-import com.example.shyamsunder.shyam_udacity.PopularMoviesHome;
+import com.example.shyamsunder.shyam_udacity.PopularMoviesHomeFragment;
 import com.example.shyamsunder.shyam_udacity.R;
+import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
 import com.example.shyamsunder.shyam_udacity.data.movieReviewObject;
 import com.example.shyamsunder.shyam_udacity.data.movieTrailerObject;
 
@@ -30,10 +27,11 @@ import java.net.URL;
 /**
  * Created by Shyam on 10/3/15.
  */
-public class getAdditionalDetails extends AsyncTask<MovieDetailObject, Void, MovieDetailObject> {
+public class getAdditionalDetails extends AsyncTask<Object, Void, MovieDetailObject> {
     private final Context mContext;
     private String LOG_TAG;
     ProgressDialog progress;
+    PopularMoviesHomeFragment.Callback callback;
 
     public getAdditionalDetails(Context context) {
         mContext = context;
@@ -51,12 +49,13 @@ public class getAdditionalDetails extends AsyncTask<MovieDetailObject, Void, Mov
         progress.show();
     }
     @Override
-    protected MovieDetailObject doInBackground(MovieDetailObject... movieDetailObjects) {
+    protected MovieDetailObject doInBackground(Object... params) {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String MovieTrailerRespone="";
         String MoviewReviewsResponse="";
-        MovieDetailObject currentMovieDetailObject=movieDetailObjects[0];
+        MovieDetailObject currentMovieDetailObject= (MovieDetailObject) params[0];
+        callback = (PopularMoviesHomeFragment.Callback) params[1];
         Uri builtUri;
         String KEY_PARAM = "api_key";
         String ID = currentMovieDetailObject.getID();
@@ -185,7 +184,7 @@ public class getAdditionalDetails extends AsyncTask<MovieDetailObject, Void, Mov
         try {
             JSONObject movieListJson = new JSONObject(response);
             JSONArray movieTrailerArray = movieListJson.getJSONArray(OWM_RESULTS);
-
+            lmovieDetailObject.clearMovieReviews();
             for(int i = 0; i < movieTrailerArray.length(); i++) {
                 movieReviewObject currentReviewObject = new movieReviewObject();
                 JSONObject movieJsonObject = movieTrailerArray.getJSONObject(i);
@@ -215,7 +214,7 @@ public class getAdditionalDetails extends AsyncTask<MovieDetailObject, Void, Mov
         try {
             JSONObject movieListJson = new JSONObject(response);
             JSONArray movieTrailerArray = movieListJson.getJSONArray(OWM_RESULTS);
-
+            lmovieDetailObject.clearMovieTrailers();
             for(int i = 0; i < movieTrailerArray.length(); i++) {
                 movieTrailerObject currentTrailerObject = new movieTrailerObject();
                 JSONObject movieJsonObject = movieTrailerArray.getJSONObject(i);
@@ -239,13 +238,9 @@ public class getAdditionalDetails extends AsyncTask<MovieDetailObject, Void, Mov
     @Override
     protected void onPostExecute(MovieDetailObject movieDetailObject) {
         super.onPostExecute(movieDetailObject);
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(PopularMoviesHome.MOVIE_OBJECT_KEY, movieDetailObject);
-        intent.putExtras(bundle);
-        intent.setClass(mContext, PopularMovieDetailsScreen.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+        (callback)
+                .onItemSelected(movieDetailObject);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

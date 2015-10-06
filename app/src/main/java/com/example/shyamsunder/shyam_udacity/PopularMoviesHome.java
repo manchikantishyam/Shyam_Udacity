@@ -1,225 +1,64 @@
 package com.example.shyamsunder.shyam_udacity;
 
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.Toast;
 
 import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
-import com.example.shyamsunder.shyam_udacity.services.getAdditionalDetails;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-
-public class PopularMoviesHome extends AppCompatActivity {
-    String LOG_TAG ="PopularMoviesHome";
-    private GridView movieGridView;
-    private MovieImageGridAdapter movieGridAdapter;
-    private ArrayList<MovieDetailObject> movieGridData;
+public class PopularMoviesHome extends AppCompatActivity implements PopularMoviesHomeFragment.Callback {
+    private boolean mTwoPane;
+    private static final String MOVIE_DETAILFRAGMENT_TAG = "DFTAG";
     public final static String MOVIE_OBJECT_KEY = "movie_detail";
-    public static String MOVIE_SORT_ORDER="popularity.desc";
-    public final String SORT_ORDER_KEY="sort_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popular_movies_home);
-
-        if (savedInstanceState != null)
-            MOVIE_SORT_ORDER = savedInstanceState.getString(SORT_ORDER_KEY);
-
-        movieGridView = (GridView) findViewById(R.id.gridView);
-
-        //Initialize with empty data
-        movieGridData = new ArrayList<>();
-        movieGridAdapter = new MovieImageGridAdapter(this, R.layout.movie_grid_item_layout, movieGridData);
-        movieGridView.setAdapter(movieGridAdapter);
-
-        movieGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                MovieDetailObject currentMovieDetailObject = (MovieDetailObject) parent.getItemAtPosition(position);
-                getAdditionalDetails getAdditionalDetailsTask = new getAdditionalDetails(PopularMoviesHome.this);
-                getAdditionalDetailsTask.execute(currentMovieDetailObject);
-
+        if (findViewById(R.id.fragment_popularMovies_detail) != null) {
+            // The detail container view will be present only in the large-screen layouts
+            // (res/layout-sw600dp). If this view is present, then the activity should be
+            // in two-pane mode.
+            mTwoPane = true;
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_popularMovies_detail, new PopularMoviesDetailFragment(), MOVIE_DETAILFRAGMENT_TAG)
+                        .commit();
             }
-        });
-
-        TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
-        getMoviesTask.execute(MOVIE_SORT_ORDER);
+        } else {
+            mTwoPane = false;
+            getSupportActionBar().setElevation(0f);
+        }
     }
+
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_popular_movies_home, menu);
-        return true;
-    }
+    public void onItemSelected(MovieDetailObject selectedMovieDetailObject) {
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle arguments = new Bundle();
+            arguments.putSerializable(PopularMoviesDetailFragment.DETAIL_BUNDLE, selectedMovieDetailObject);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_popular) {
-            TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
-            MOVIE_SORT_ORDER="popularity.desc";
-            getMoviesTask.execute(MOVIE_SORT_ORDER);
-            return true;
+            PopularMoviesDetailFragment fragment = new PopularMoviesDetailFragment();
+            fragment.setArguments(arguments);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_popularMovies_detail, fragment, MOVIE_DETAILFRAGMENT_TAG)
+                    .commit();
+        } else {
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(PopularMoviesHome.MOVIE_OBJECT_KEY, selectedMovieDetailObject);
+            intent.putExtras(bundle);
+            intent.setClass(PopularMoviesHome.this, PopularMovieDetailsScreen.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
         }
-        if (id == R.id.action_rated) {
-            TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
-            MOVIE_SORT_ORDER="vote_average.desc";
-            getMoviesTask.execute(MOVIE_SORT_ORDER);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public class TheMovieDBAPI extends AsyncTask<String,Void,ArrayList<MovieDetailObject>> {
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected ArrayList<MovieDetailObject> doInBackground(String... params) {
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-            String MoviesRespones="";
-            Uri builtUri;
-            try {
-                String SORT_PARAM = "sort_by";
-                String KEY_PARAM = "api_key";
-                String sort_by = params[0];
-                String API_key = getApplicationContext().getResources().getString(R.string.popular_movie_API_key);
-                String base_Url = "http://api.themoviedb.org/3/discover/movie?";
-                builtUri = Uri.parse(base_Url).buildUpon()
-                        .appendQueryParameter(SORT_PARAM, sort_by)
-                        .appendQueryParameter(KEY_PARAM, API_key)
-                        .build();
-
-                URL url = new URL(builtUri.toString());
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null;
-                }
-                MoviesRespones = buffer.toString();
-
-
-            }catch(Throwable e){
-                Log.e(LOG_TAG, "Error ", e);
-                return null;
-            }finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        Log.e(LOG_TAG, "Error closing stream", e);
-                    }
-                }
-            }
-            Log.d("Shyam-URL",builtUri.toString());
-            Log.d("Shyam-Movie Response",MoviesRespones);
-
-            return getMoviesDataFromJson(MoviesRespones);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<MovieDetailObject> MoviesList) {
-            if(MoviesList!=null&&MoviesList.size()>0){
-                movieGridData = MoviesList;
-                movieGridAdapter.setGridData(movieGridData);
-                Toast.makeText(PopularMoviesHome.this, "Movies Loading", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(PopularMoviesHome.this, "Failed to fetch data! Please check API Key", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
-
-    public ArrayList<MovieDetailObject> getMoviesDataFromJson(String response){
-        final String OWM_RESULTS = "results";
-        final String OWM_ID = "id";
-        final String OWM_TITLE = "title";
-        final String OWM_RELEASE_DATE = "release_date";
-        final String OWM_BACKDROP_PATH = "backdrop_path";
-        final String OWM_OVERVIEW = "overview";
-        final String OWM_VOTE_RATING = "vote_average";
-        try {
-            JSONObject movieListJson = new JSONObject(response);
-            JSONArray movieListArray = movieListJson.getJSONArray(OWM_RESULTS);
-            ArrayList<MovieDetailObject> parsedMovieDetailsArray = new ArrayList<MovieDetailObject>();
-
-            for(int i = 0; i < movieListArray.length(); i++) {
-                MovieDetailObject currentMovieDetailObject = new MovieDetailObject();
-                JSONObject movieJsonObject = movieListArray.getJSONObject(i);
-                currentMovieDetailObject.setID(movieJsonObject.getString(OWM_ID));
-                currentMovieDetailObject.setTitle(movieJsonObject.getString(OWM_TITLE));
-                currentMovieDetailObject.setRelease_date(movieJsonObject.getString(OWM_RELEASE_DATE));
-                currentMovieDetailObject.setBackdrop_URL(movieJsonObject.getString(OWM_BACKDROP_PATH));
-                currentMovieDetailObject.setOverView(movieJsonObject.getString(OWM_OVERVIEW));
-                currentMovieDetailObject.setVote_rating(movieJsonObject.getString(OWM_VOTE_RATING));
-                parsedMovieDetailsArray.add(currentMovieDetailObject);
-            }
-
-            return parsedMovieDetailsArray;
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public void showToast(String toastString){
-        Toast.makeText(this.getBaseContext(), toastString,
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putCharSequence(SORT_ORDER_KEY,MOVIE_SORT_ORDER);
     }
 }
