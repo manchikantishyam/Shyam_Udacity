@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/movie_detail_fragment"
     tools:context="com.example.shyamsunder.shyam_udacity.PopularMovieDetailsScreen">
 
     <ScrollView
@@ -22,7 +23,6 @@
                 android:paddingBottom="17dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="20dp"
-                android:text="Chappie"
                 android:textColor="@color/white1"
                 android:id="@+id/movie_details_title_text"
                 android:textSize="30sp" />
@@ -38,7 +38,6 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_launcher"
                     android:id="@+id/movie_details_poster_view"/>
 
                 <LinearLayout
@@ -51,7 +50,6 @@
                         android:id="@+id/movie_details_year_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2015"
                         android:textSize="23sp" />
 
                     <TextView
@@ -59,13 +57,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="3dp"
-                        android:text="  8.1/10"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/mark_favorite"
                         android:background="@color/teal_title"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
@@ -82,7 +78,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="15dp"
-                android:text="Every child comes into this world full of promises, none more than so Chappie he is gifted, special, a podigy: he is a Robot"
                 android:textSize="15sp" />
             <View
                 android:layout_width="match_parent"
