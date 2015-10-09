@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -45,67 +46,74 @@ public class PopularMoviesDetailFragment extends Fragment {
         TextView movieRatingTextView = (TextView) rootView.findViewById(R.id.movie_details_rating_text);
         TextView movieSynopsisTextView = (TextView) rootView.findViewById(R.id.movie_details_movie_synopsis_text);
         ImageView moviePosterView = (ImageView) rootView.findViewById(R.id.movie_details_poster_view);
+        LinearLayout masterDetailLinearLayout = (LinearLayout) rootView.findViewById(R.id.movie_detail_fragment);
 
-        movieTitleTextView.setText(currentMoviedetailObject.getTitle());
-        movieReleaseYearTextView.setText(currentMoviedetailObject.getRelease_date().substring(0,4));
-        movieRatingTextView.setText(currentMoviedetailObject.getVote_rating()+"/10");
-        movieSynopsisTextView.setText(currentMoviedetailObject.getOverView());
+        if(currentMoviedetailObject!=null) {
+            masterDetailLinearLayout.setVisibility(View.VISIBLE);
+            movieTitleTextView.setText(currentMoviedetailObject.getTitle());
+            movieReleaseYearTextView.setText(currentMoviedetailObject.getRelease_date().substring(0, 4));
+            movieRatingTextView.setText(currentMoviedetailObject.getVote_rating() + "/10");
+            movieSynopsisTextView.setText(currentMoviedetailObject.getOverView());
 
-        Picasso.with(getActivity()).load(currentMoviedetailObject.getBackdrop_URL()).into(moviePosterView);
+            Picasso.with(getActivity()).load(currentMoviedetailObject.getBackdrop_URL()).into(moviePosterView);
 
-        //Trailer's
-        MovieDetailTrailerAdapter movieDetailTrailerAdapter = new MovieDetailTrailerAdapter(getActivity(),R.layout.movie_detail_trailer_item,
-                currentMoviedetailObject.getMovieTrailers());
-        ListView movieTrailerListView = (ListView) rootView.findViewById(R.id.trailerListView);
-        movieTrailerListView.setAdapter(movieDetailTrailerAdapter);
 
-        movieTrailerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+            //Trailer's
+            MovieDetailTrailerAdapter movieDetailTrailerAdapter = new MovieDetailTrailerAdapter(getActivity(), R.layout.movie_detail_trailer_item,
+                    currentMoviedetailObject.getMovieTrailers());
+            ListView movieTrailerListView = (ListView) rootView.findViewById(R.id.trailerListView);
+            movieTrailerListView.setAdapter(movieDetailTrailerAdapter);
 
-                movieTrailerObject currentTrailerObject = (movieTrailerObject) parent.getItemAtPosition(position);
-                String urlStr = "http://www.youtube.com/watch?v=" + currentTrailerObject.getKey();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(urlStr));
-                startActivity(intent);
-            }
-        });
+            movieTrailerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-        //Adding Review Section
-        //Trailer's
-        MovieDetailReviewAdapter movieDetailReviewAdapter = new MovieDetailReviewAdapter(getActivity(),R.layout.movie_detail_review_item,
-                currentMoviedetailObject.getMovieReviews());
-        ListView movieReviewListView = (ListView) rootView.findViewById(R.id.review_ListView);
-        movieReviewListView.setAdapter(movieDetailReviewAdapter);
-        setListViewHeightBasedOnChildren(movieTrailerListView, movieReviewListView);
-
-        movieReviewListView.setOnTouchListener(new View.OnTouchListener() {
-            // Setting on Touch Listener for handling the touch inside ScrollView
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // Disallow the touch request for parent scroll on touch of child view
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                return false;
-            }
-        });
-
-        final DatabaseHandler local_db = new DatabaseHandler(getActivity(),"themoviedb");
-        local_db.createprojecttables();
-        setMarkFavoriteTextView(local_db,rootView);
-        TextView markFavoriteTextView = (TextView) rootView.findViewById(R.id.favorite_button);
-        markFavoriteTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (local_db.checkIfMovieExist(currentMoviedetailObject.getID())){
-                    local_db.deleteMovie(currentMoviedetailObject.getID());
-                }else{
-                    local_db.addMovie(currentMoviedetailObject.getID(), currentMoviedetailObject);
+                    movieTrailerObject currentTrailerObject = (movieTrailerObject) parent.getItemAtPosition(position);
+                    String urlStr = "http://www.youtube.com/watch?v=" + currentTrailerObject.getKey();
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(urlStr));
+                    startActivity(intent);
                 }
-                setMarkFavoriteTextView(local_db,rootView);
-            }
-        });
+            });
 
-        ScrollView scroll_view = (ScrollView) rootView.findViewById(R.id.movie_details_scroll_view);
-        scroll_view.smoothScrollTo(0, 0);
+            //Adding Review Section
+            //Trailer's
+            MovieDetailReviewAdapter movieDetailReviewAdapter = new MovieDetailReviewAdapter(getActivity(), R.layout.movie_detail_review_item,
+                    currentMoviedetailObject.getMovieReviews());
+            ListView movieReviewListView = (ListView) rootView.findViewById(R.id.review_ListView);
+            movieReviewListView.setAdapter(movieDetailReviewAdapter);
+            setListViewHeightBasedOnChildren(movieTrailerListView, movieReviewListView);
+
+            movieReviewListView.setOnTouchListener(new View.OnTouchListener() {
+                // Setting on Touch Listener for handling the touch inside ScrollView
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    // Disallow the touch request for parent scroll on touch of child view
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
+
+            final DatabaseHandler local_db = new DatabaseHandler(getActivity(), "themoviedb");
+            local_db.createprojecttables();
+            setMarkFavoriteTextView(local_db, rootView);
+            TextView markFavoriteTextView = (TextView) rootView.findViewById(R.id.favorite_button);
+            markFavoriteTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (local_db.checkIfMovieExist(currentMoviedetailObject.getID())) {
+                        local_db.deleteMovie(currentMoviedetailObject.getID());
+                    } else {
+                        local_db.addMovie(currentMoviedetailObject.getID(), currentMoviedetailObject);
+                    }
+                    setMarkFavoriteTextView(local_db, rootView);
+                }
+            });
+
+            ScrollView scroll_view = (ScrollView) rootView.findViewById(R.id.movie_details_scroll_view);
+            scroll_view.smoothScrollTo(0, 0);
+        }else{
+            masterDetailLinearLayout.setVisibility(View.INVISIBLE);
+        }
 
         return rootView;
     }

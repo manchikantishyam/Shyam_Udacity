@@ -1,8 +1,10 @@
 package com.example.shyamsunder.shyam_udacity;
 
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,8 +130,14 @@ public class PopularMoviesHomeFragment extends Fragment {
     }
 
     public class TheMovieDBAPI extends AsyncTask<String,Void,ArrayList<MovieDetailObject>> {
+        ProgressDialog progress;
         @Override
-        protected void onPreExecute() {}
+        protected void onPreExecute() {
+            progress= new ProgressDialog(getActivity());
+            progress.setTitle("Movie's List is on it's Way");
+            progress.setMessage("Please Wait....");
+            progress.show();
+        }
 
         @Override
         protected ArrayList<MovieDetailObject> doInBackground(String... params) {
@@ -207,6 +215,12 @@ public class PopularMoviesHomeFragment extends Fragment {
             } else {
                 Toast.makeText(getActivity(), "Failed to fetch data! Please check API Key", Toast.LENGTH_SHORT).show();
             }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progress.dismiss();
+                }
+            }, 300);
         }
 
     }
