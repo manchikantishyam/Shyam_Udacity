@@ -1,4 +1,4 @@
-package com.example.shyamsunder.shyam_udacity.services;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.services;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,11 +7,11 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
-import com.example.shyamsunder.shyam_udacity.PopularMoviesHomeFragment;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.view.PopularMoviesHomeFragment;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieReviewObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieTrailerObject;
 import com.example.shyamsunder.shyam_udacity.R;
-import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
-import com.example.shyamsunder.shyam_udacity.data.movieReviewObject;
-import com.example.shyamsunder.shyam_udacity.data.movieTrailerObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,13 +27,13 @@ import java.net.URL;
 /**
  * Created by Shyam on 10/3/15.
  */
-public class getAdditionalDetails extends AsyncTask<Object, Void, MovieDetailObject> {
+public class GetAdditionalDetails extends AsyncTask<Object, Void, MovieDetailObject> {
     private final Context mContext;
     private String LOG_TAG;
     ProgressDialog progress;
     PopularMoviesHomeFragment.Callback callback;
 
-    public getAdditionalDetails(Context context) {
+    public GetAdditionalDetails(Context context) {
         mContext = context;
         LOG_TAG=context.getClass().toString();
         progress= new ProgressDialog(mContext);
@@ -186,7 +186,7 @@ public class getAdditionalDetails extends AsyncTask<Object, Void, MovieDetailObj
             JSONArray movieTrailerArray = movieListJson.getJSONArray(OWM_RESULTS);
             lmovieDetailObject.clearMovieReviews();
             for(int i = 0; i < movieTrailerArray.length(); i++) {
-                movieReviewObject currentReviewObject = new movieReviewObject();
+                MovieReviewObject currentReviewObject = new MovieReviewObject();
                 JSONObject movieJsonObject = movieTrailerArray.getJSONObject(i);
                 currentReviewObject.setId(movieJsonObject.getString(OWM_ID));
                 currentReviewObject.setAuthor(movieJsonObject.getString(OWM_LANGUAGE));
@@ -216,7 +216,7 @@ public class getAdditionalDetails extends AsyncTask<Object, Void, MovieDetailObj
             JSONArray movieTrailerArray = movieListJson.getJSONArray(OWM_RESULTS);
             lmovieDetailObject.clearMovieTrailers();
             for(int i = 0; i < movieTrailerArray.length(); i++) {
-                movieTrailerObject currentTrailerObject = new movieTrailerObject();
+                MovieTrailerObject currentTrailerObject = new MovieTrailerObject();
                 JSONObject movieJsonObject = movieTrailerArray.getJSONObject(i);
                 currentTrailerObject.setVideo_ID(movieJsonObject.getString(OWM_ID));
                 currentTrailerObject.setLanguage(movieJsonObject.getString(OWM_LANGUAGE));

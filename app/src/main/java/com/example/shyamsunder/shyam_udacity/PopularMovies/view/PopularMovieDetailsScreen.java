@@ -1,7 +1,9 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.shyamsunder.shyam_udacity.R;
 
 public class PopularMovieDetailsScreen extends AppCompatActivity {
     @Override
@@ -14,7 +16,7 @@ public class PopularMovieDetailsScreen extends AppCompatActivity {
 
             Bundle currentBundle = this.getIntent().getExtras();
             Bundle arguments = new Bundle();
-            arguments.putSerializable(PopularMoviesDetailFragment.DETAIL_BUNDLE, currentBundle.getSerializable(PopularMoviesHome.MOVIE_OBJECT_KEY));
+            arguments.putParcelable(PopularMoviesDetailFragment.DETAIL_BUNDLE, currentBundle.getParcelable(PopularMoviesHomeScreen.MOVIE_OBJECT_KEY));
 
             PopularMoviesDetailFragment fragment = new PopularMoviesDetailFragment();
             fragment.setArguments(arguments);

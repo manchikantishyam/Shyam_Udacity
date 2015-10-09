@@ -1,10 +1,11 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.view;
 
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +18,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
-import com.example.shyamsunder.shyam_udacity.services.getAdditionalDetails;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.services.GetAdditionalDetails;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.utility.DatabaseHandler;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.view.adapter.MovieImageGridAdapter;
+import com.example.shyamsunder.shyam_udacity.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,13 +40,13 @@ import java.util.ArrayList;
  * Created by Shyam on 10/5/15.
  */
 public class PopularMoviesHomeFragment extends Fragment {
-    String LOG_TAG ="PopularMoviesHome";
+    String LOG_TAG ="PopularMoviesHomeScreen";
     private GridView movieGridView;
     private MovieImageGridAdapter movieGridAdapter;
     private ArrayList<MovieDetailObject> movieGridData;
-    public final static String MOVIE_OBJECT_KEY = "movie_detail";
     public static String MOVIE_SORT_ORDER="popularity.desc";
     public final String SORT_ORDER_KEY="sort_key";
+    public final String MOVIE_KEY="movie_list_key";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,8 +106,10 @@ public class PopularMoviesHomeFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.popular_home_fragment, container, false);
 
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             MOVIE_SORT_ORDER = savedInstanceState.getString(SORT_ORDER_KEY);
+            movieGridData = (ArrayList<MovieDetailObject>)savedInstanceState.get(MOVIE_KEY);
+        }
 
         movieGridView = (GridView) rootView.findViewById(R.id.gridView);
 
@@ -116,15 +122,17 @@ public class PopularMoviesHomeFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
                 MovieDetailObject currentMovieDetailObject = (MovieDetailObject) parent.getItemAtPosition(position);
-                getAdditionalDetails getAdditionalDetailsTask = new getAdditionalDetails(getActivity());
+                GetAdditionalDetails getAdditionalDetailsTask = new GetAdditionalDetails(getActivity());
                 getAdditionalDetailsTask.execute(currentMovieDetailObject,getActivity());
 
 
             }
         });
 
-        TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
-        getMoviesTask.execute(MOVIE_SORT_ORDER);
+        if(movieGridData.size()==0) {
+            TheMovieDBAPI getMoviesTask = new TheMovieDBAPI();
+            getMoviesTask.execute(MOVIE_SORT_ORDER);
+        }
 
         return rootView;
     }
@@ -268,5 +276,6 @@ public class PopularMoviesHomeFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequence(SORT_ORDER_KEY, MOVIE_SORT_ORDER);
+        outState.putParcelableArrayList(MOVIE_KEY, (ArrayList<? extends Parcelable>) movieGridData);
     }
 }

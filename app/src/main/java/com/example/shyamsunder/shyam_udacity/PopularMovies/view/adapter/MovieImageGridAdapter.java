@@ -1,4 +1,4 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

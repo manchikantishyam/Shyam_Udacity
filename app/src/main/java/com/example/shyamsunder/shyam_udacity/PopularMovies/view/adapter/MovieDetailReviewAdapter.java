@@ -1,4 +1,4 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,43 +8,44 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.shyamsunder.shyam_udacity.data.movieReviewObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieReviewObject;
+import com.example.shyamsunder.shyam_udacity.R;
 
 import java.util.ArrayList;
 
 /**
  * Created by Shyam on 10/5/15.
  */
-public class MovieDetailReviewAdapter extends ArrayAdapter<movieReviewObject> {
+public class MovieDetailReviewAdapter extends ArrayAdapter<MovieReviewObject> {
     private Context mContext;
     private int layoutResourceId;
-    private ArrayList<movieReviewObject> movieReviewObjects = new ArrayList<>();
+    private ArrayList<MovieReviewObject> MovieReviewObjects = new ArrayList<>();
 
-    public MovieDetailReviewAdapter(Context context, int resource, ArrayList<movieReviewObject> movieReviewObjects) {
-        super(context, resource,movieReviewObjects);
-        this.movieReviewObjects = movieReviewObjects;
+    public MovieDetailReviewAdapter(Context context, int resource, ArrayList<MovieReviewObject> MovieReviewObjects) {
+        super(context, resource, MovieReviewObjects);
+        this.MovieReviewObjects = MovieReviewObjects;
         layoutResourceId=resource;
         mContext=context;
     }
     /**
      * Updates grid data and refresh grid items.
-     * @param movieReviewObjects
+     * @param MovieReviewObjects
      */
-    public void setGridData(ArrayList<movieReviewObject> movieReviewObjects) {
-        this.movieReviewObjects = movieReviewObjects;
+    public void setGridData(ArrayList<MovieReviewObject> MovieReviewObjects) {
+        this.MovieReviewObjects = MovieReviewObjects;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return movieReviewObjects.size();
+        return MovieReviewObjects.size();
     }
 
     @Override
-    public movieReviewObject getItem(int position) {
+    public MovieReviewObject getItem(int position) {
         // TODO Auto-generated method stub
-        return movieReviewObjects.get(position);
+        return MovieReviewObjects.get(position);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class MovieDetailReviewAdapter extends ArrayAdapter<movieReviewObject> {
             holder = (ViewHolder) row.getTag();
         }
 
-        movieReviewObject item = movieReviewObjects.get(position);
+        MovieReviewObject item = MovieReviewObjects.get(position);
         holder.authorNameTextView.setText(item.getAuthor());
         holder.reviewContentTextView.setText(item.getContent());
         return row;

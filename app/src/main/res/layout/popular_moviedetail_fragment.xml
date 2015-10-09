@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/movie_detail_fragment"
-    tools:context="com.example.shyamsunder.shyam_udacity.PopularMovieDetailsScreen">
+    tools:context="com.example.shyamsunder.shyam_udacity.PopularMovies.view.PopularMovieDetailsScreen">
 
     <ScrollView
         android:layout_width="wrap_content"

@@ -1,4 +1,4 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.utility;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieDetailObject;
 
 import java.util.ArrayList;
 

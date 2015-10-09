@@ -3,5 +3,5 @@
     android:id="@+id/fragment_popularMovies_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.shyamsunder.shyam_udacity.PopularMovieDetailsScreen"
+    tools:context="com.example.shyamsunder.shyam_udacity.PopularMovies.view.PopularMovieDetailsScreen"
     tools:ignore="MergeRootFrame"/>

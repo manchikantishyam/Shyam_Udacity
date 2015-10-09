@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.shyamsunder.shyam_udacity.PopularMovies.view.PopularMoviesHomeScreen;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -22,7 +24,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void popularMoviesClick(View v){
-        Intent localIntent = new Intent(this,PopularMoviesHome.class);
+        Intent localIntent = new Intent(this,PopularMoviesHomeScreen.class);
         startActivity(localIntent);
 
     }

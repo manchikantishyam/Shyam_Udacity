@@ -1,4 +1,4 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.view;
 
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -19,8 +19,12 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
-import com.example.shyamsunder.shyam_udacity.data.movieTrailerObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.utility.DatabaseHandler;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.view.adapter.MovieDetailReviewAdapter;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.view.adapter.MovieDetailTrailerAdapter;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieTrailerObject;
+import com.example.shyamsunder.shyam_udacity.R;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -38,7 +42,7 @@ public class PopularMoviesDetailFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.popular_moviedetail_fragment, container, false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            currentMoviedetailObject = (MovieDetailObject)arguments.getSerializable(PopularMoviesDetailFragment.DETAIL_BUNDLE);
+            currentMoviedetailObject = (MovieDetailObject)arguments.getParcelable(PopularMoviesDetailFragment.DETAIL_BUNDLE);
         }
 
         TextView movieTitleTextView = (TextView)rootView.findViewById(R.id.movie_details_title_text);
@@ -67,7 +71,7 @@ public class PopularMoviesDetailFragment extends Fragment {
             movieTrailerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-                    movieTrailerObject currentTrailerObject = (movieTrailerObject) parent.getItemAtPosition(position);
+                    MovieTrailerObject currentTrailerObject = (MovieTrailerObject) parent.getItemAtPosition(position);
                     String urlStr = "http://www.youtube.com/watch?v=" + currentTrailerObject.getKey();
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(urlStr));

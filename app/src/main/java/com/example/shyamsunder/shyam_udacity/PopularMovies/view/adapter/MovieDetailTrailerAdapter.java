@@ -1,4 +1,4 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,43 +8,44 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.shyamsunder.shyam_udacity.data.movieTrailerObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieTrailerObject;
+import com.example.shyamsunder.shyam_udacity.R;
 
 import java.util.ArrayList;
 
 /**
  * Created by Shyam on 10/4/15.
  */
-public class MovieDetailTrailerAdapter extends ArrayAdapter<movieTrailerObject> {
+public class MovieDetailTrailerAdapter extends ArrayAdapter<MovieTrailerObject> {
     private Context mContext;
     private int layoutResourceId;
-    private ArrayList<movieTrailerObject> movieTrailerObjects = new ArrayList<>();
+    private ArrayList<MovieTrailerObject> MovieTrailerObjects = new ArrayList<>();
 
-    public MovieDetailTrailerAdapter(Context context, int resource, ArrayList<movieTrailerObject> movieTrailerObjects) {
-        super(context, resource,movieTrailerObjects);
-        this.movieTrailerObjects = movieTrailerObjects;
+    public MovieDetailTrailerAdapter(Context context, int resource, ArrayList<MovieTrailerObject> MovieTrailerObjects) {
+        super(context, resource, MovieTrailerObjects);
+        this.MovieTrailerObjects = MovieTrailerObjects;
         layoutResourceId=resource;
         mContext=context;
     }
     /**
      * Updates grid data and refresh grid items.
-     * @param movieTrailerObjects
+     * @param MovieTrailerObjects
      */
-    public void setGridData(ArrayList<movieTrailerObject> movieTrailerObjects) {
-        this.movieTrailerObjects = movieTrailerObjects;
+    public void setGridData(ArrayList<MovieTrailerObject> MovieTrailerObjects) {
+        this.MovieTrailerObjects = MovieTrailerObjects;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return movieTrailerObjects.size();
+        return MovieTrailerObjects.size();
     }
 
     @Override
-    public movieTrailerObject getItem(int position) {
+    public MovieTrailerObject getItem(int position) {
         // TODO Auto-generated method stub
-        return movieTrailerObjects.get(position);
+        return MovieTrailerObjects.get(position);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class MovieDetailTrailerAdapter extends ArrayAdapter<movieTrailerObject> 
             holder = (ViewHolder) row.getTag();
         }
 
-        movieTrailerObject item = movieTrailerObjects.get(position);
+        MovieTrailerObject item = MovieTrailerObjects.get(position);
         holder.textView.setText(item.getName());
         return row;
     }

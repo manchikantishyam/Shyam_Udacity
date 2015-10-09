@@ -1,12 +1,13 @@
-package com.example.shyamsunder.shyam_udacity;
+package com.example.shyamsunder.shyam_udacity.PopularMovies.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.shyamsunder.shyam_udacity.data.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.PopularMovies.datamodel.MovieDetailObject;
+import com.example.shyamsunder.shyam_udacity.R;
 
-public class PopularMoviesHome extends AppCompatActivity implements PopularMoviesHomeFragment.Callback {
+public class PopularMoviesHomeScreen extends AppCompatActivity implements PopularMoviesHomeFragment.Callback {
     private boolean mTwoPane;
     private static final String MOVIE_DETAILFRAGMENT_TAG = "DFTAG";
     public final static String MOVIE_OBJECT_KEY = "movie_detail";
@@ -42,7 +43,7 @@ public class PopularMoviesHome extends AppCompatActivity implements PopularMovie
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putSerializable(PopularMoviesDetailFragment.DETAIL_BUNDLE, selectedMovieDetailObject);
+            arguments.putParcelable(PopularMoviesDetailFragment.DETAIL_BUNDLE, selectedMovieDetailObject);
 
             PopularMoviesDetailFragment fragment = new PopularMoviesDetailFragment();
             fragment.setArguments(arguments);
@@ -53,9 +54,9 @@ public class PopularMoviesHome extends AppCompatActivity implements PopularMovie
         } else {
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
-            bundle.putSerializable(PopularMoviesHome.MOVIE_OBJECT_KEY, selectedMovieDetailObject);
+            bundle.putParcelable(PopularMoviesHomeScreen.MOVIE_OBJECT_KEY, selectedMovieDetailObject);
             intent.putExtras(bundle);
-            intent.setClass(PopularMoviesHome.this, PopularMovieDetailsScreen.class);
+            intent.setClass(PopularMoviesHomeScreen.this, PopularMovieDetailsScreen.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
 
